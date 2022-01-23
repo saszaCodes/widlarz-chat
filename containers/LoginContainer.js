@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import { useMutation, gql } from "@apollo/client";
 import SessionContext from "../contexts/SessionContext";
-import RoomsList from "../components/RoomsList";
 
 const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
@@ -15,7 +14,7 @@ const LOGIN = gql`
   }
 `;
 
-export default function RoomsListContainer(props) {
+export default function LoginContainer(props) {
   const { navigation } = props;
   const { setSessionToken } = useContext(SessionContext);
   const [email, setEmail] = useState();
@@ -47,6 +46,10 @@ export default function RoomsListContainer(props) {
     });
   }
 
+  function handleRegistrationRoute() {
+    navigation.replace("Registration");
+  }
+
   if (loading) return <Text>Loading...</Text>;
   // if (error) return <Text>{error.message}</Text>;
 
@@ -61,6 +64,9 @@ export default function RoomsListContainer(props) {
       />
       <Pressable onPress={() => handleLogin(email, password)}>
         <Text>Login</Text>
+      </Pressable>
+      <Pressable onPress={handleRegistrationRoute}>
+        <Text>Register, if you don't have an account</Text>
       </Pressable>
     </View>
   );
