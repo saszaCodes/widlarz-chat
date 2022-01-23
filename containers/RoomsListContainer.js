@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useQuery, gql } from "@apollo/client";
+import RoomsList from "../components/RoomsList";
 
 const USER_ROOMS = gql`
   query getRoom {
@@ -19,7 +20,16 @@ export default function RoomsListContainer() {
 
   const rooms = data.usersRooms.rooms.map((el) => <Text>{el.name}</Text>);
 
-  return <View>{rooms}</View>;
+  function handleListElementPress(id) {
+    console.log(id);
+  }
+
+  return (
+    <RoomsList
+      roomsList={data.usersRooms.rooms}
+      pressHandler={handleListElementPress}
+    />
+  );
 }
 
 const styles = StyleSheet.create({});
