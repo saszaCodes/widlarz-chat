@@ -4,7 +4,7 @@ import ChatMessagesAll from "../components/ChatMessagesAll";
 import ChatInput from "../components/ChatInput";
 import React from "react";
 
-const USER_ROOMS = gql`
+const ROOM = gql`
   query getRoomById($id: ID!) {
     room(id: $id) {
       name
@@ -33,10 +33,12 @@ const SEND_MESSAGE = gql`
   }
 `;
 
-export default function ChatContainer() {
-  const { loading, data, error } = useQuery(USER_ROOMS, {
+export default function ChatContainer(props) {
+  const { roomId } = props;
+
+  const { loading, data, error } = useQuery(ROOM, {
     variables: {
-      id: "CHAT_ID",
+      id: roomId,
     },
     pollInterval: 500,
   });
@@ -63,7 +65,7 @@ export default function ChatContainer() {
     sendMessage({
       variables: {
         body: message,
-        roomId: "CHAT_ID",
+        roomId,
       },
     });
   }

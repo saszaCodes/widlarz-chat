@@ -13,15 +13,15 @@ const USER_ROOMS = gql`
   }
 `;
 
-export default function RoomsListContainer() {
+export default function RoomsListContainer(props) {
+  const { navigation } = props;
+
   const { loading, error, data } = useQuery(USER_ROOMS);
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error.message}</Text>;
 
-  const rooms = data.usersRooms.rooms.map((el) => <Text>{el.name}</Text>);
-
   function handleListElementPress(id) {
-    console.log(id);
+    navigation.navigate("Chat", { roomId: id });
   }
 
   return (

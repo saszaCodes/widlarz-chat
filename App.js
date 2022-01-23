@@ -6,7 +6,10 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import RoomsListContainer from "./containers/RoomsListContainer";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RoomsListScreen from "./screens/RoomsListScreen";
+import ChatScreen from "./screens/ChatScreen";
 
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
@@ -30,10 +33,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <RoomsListContainer />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="RoomsList" component={RoomsListScreen} />
+          <Stack.Screen name="Chat" component={ChatScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </ApolloProvider>
   );
 }
