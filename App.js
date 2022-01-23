@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState, useEffect } from "react";
 import SessionContext from "./contexts/SessionContext";
+import RegistrationScreen from "./screens/RegistrationScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RoomsListScreen from "./screens/RoomsListScreen";
 import ChatScreen from "./screens/ChatScreen";
@@ -80,6 +81,7 @@ export default function App() {
       <ApolloProvider client={apolloClient}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="RoomsList" component={RoomsListScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
