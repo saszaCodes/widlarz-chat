@@ -19,7 +19,6 @@ export default function LoginContainer(props) {
   const { setSessionToken } = useContext(SessionContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const [login, { data, loading, error }] = useMutation(LOGIN, {
     variables: {
@@ -34,15 +33,11 @@ export default function LoginContainer(props) {
   }
 
   function handleLogin(email, password) {
-    setInvalidCredentials(false);
     login({
       variables: { email, password },
-    }).catch((err) => {
-      if (err.message === "Invalid credentials") {
-        setEmail("");
-        setPassword("");
-        setInvalidCredentials(true);
-      }
+    }).catch(() => {
+      setEmail("");
+      setPassword("");
     });
   }
 
@@ -51,11 +46,10 @@ export default function LoginContainer(props) {
   }
 
   if (loading) return <Text>Loading...</Text>;
-  // if (error) return <Text>{error.message}</Text>;
 
   return (
     <View>
-      {invalidCredentials && <Text>Invalid credentials!</Text>}
+      {error && <Text>{error.message}</Text>}
       <TextInput onChangeText={setEmail} value={email} placeholder="Email" />
       <TextInput
         onChangeText={setPassword}

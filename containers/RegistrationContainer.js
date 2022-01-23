@@ -53,15 +53,12 @@ export default function RegistrationContainer(props) {
   ) {
     login({
       variables: { email, firstName, lastName, password, passwordConfirmation },
-    }).catch((err) => {
-      console.log(err.message);
-      if (err.message === "Invalid credentials") {
-        setEmail("");
-        setFirstName("");
-        setLastName("");
-        setPassword("");
-        setPasswordConfirmation("");
-      }
+    }).catch(() => {
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      setPassword("");
+      setPasswordConfirmation("");
     });
   }
 
@@ -70,10 +67,10 @@ export default function RegistrationContainer(props) {
   }
 
   if (loading) return <Text>Loading...</Text>;
-  // if (error) return <Text>{error.message}</Text>;
 
   return (
     <View>
+      {error && <Text>{error.message}</Text>}
       <TextInput onChangeText={setEmail} value={email} placeholder="Email" />
       <TextInput
         onChangeText={setFirstName}
