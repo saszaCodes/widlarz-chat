@@ -1,5 +1,8 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useQuery, gql } from "@apollo/client";
+import ChatMessagesAll from "../components/ChatMessagesAll";
+import ChatInput from "../components/ChatInput";
+import React from "react";
 
 const USER_ROOMS = gql`
   query getRoomById($id: ID!) {
@@ -25,17 +28,25 @@ export default function ChatContainer() {
   });
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error.message}</Text>;
-  console.log(data);
 
-  const chat = data.room.messages.map((el) => (
-    <Text>
-      {el.user.firstName}
-      {"\n"}
-      {el.body}
-    </Text>
-  ));
+  const messagesList = data.room.messages.map((message) => {
+    return {
+      body: message.body,
+      date: message.insertedAt,
+      author: `${message.user.firstName} ${message.user.lastName}`,
+    };
+  });
 
-  return <View>{chat}</View>;
+  function handleSend(message) {
+    console.log(message);
+  }
+
+  return (
+    <React.Fragment>
+      <ChatMessagesAll messagesList={messagesList} />
+      <ChatInput handleSend={handleSend} />
+    </React.Fragment>
+  );
 }
 
 const styles = StyleSheet.create({});
