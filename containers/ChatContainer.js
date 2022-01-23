@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from "react-native";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import ChatMessagesAll from "../components/ChatMessagesAll";
 import ChatInput from "../components/ChatInput";
 import React from "react";
@@ -20,12 +20,34 @@ const USER_ROOMS = gql`
   }
 `;
 
+const SEND_MESSAGE = gql`
+  mutation sendMessage($roomId: String!, $body: String!) {
+    sendMessage(roomId: $roomId, body: $body) {
+      body
+      insertedAt
+      user {
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 export default function ChatContainer() {
-  const { loading, error, data } = useQuery(USER_ROOMS, {
+  const { loading, data, error } = useQuery(USER_ROOMS, {
     variables: {
       id: "CHAT_ID",
     },
+    pollInterval: 500,
   });
+
+  const [sendMessage, mutationResponse] = useMutation(SEND_MESSAGE, {
+    variables: {
+      body: undefined,
+      roomId: undefined,
+    },
+  });
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error.message}</Text>;
 
@@ -38,7 +60,12 @@ export default function ChatContainer() {
   });
 
   function handleSend(message) {
-    console.log(message);
+    sendMessage({
+      variables: {
+        body: message,
+        roomId: "CHAT_ID",
+      },
+    });
   }
 
   return (
