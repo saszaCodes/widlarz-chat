@@ -1,10 +1,10 @@
-import { StyleSheet, View, Text } from "react-native";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import React, { useEffect } from "react";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { useQuery, useSubscription, useMutation, gql } from "@apollo/client";
 import ChatMessagesAll from "../components/ChatMessagesAll";
 import ChatInput from "../components/ChatInput";
-import React from "react";
 
-const ROOM = gql`
+const ROOM_QUERY = gql`
   query getRoomById($id: ID!) {
     room(id: $id) {
       name
@@ -15,6 +15,19 @@ const ROOM = gql`
           firstName
           lastName
         }
+      }
+    }
+  }
+`;
+
+const ROOM_SUBSCRIPTION = gql`
+  subscription getNewMessages($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      body
+      insertedAt
+      user {
+        firstName
+        lastName
       }
     }
   }
@@ -36,11 +49,10 @@ const SEND_MESSAGE = gql`
 export default function ChatContainer(props) {
   const { roomId } = props;
 
-  const { loading, data, error } = useQuery(ROOM, {
+  const { subscribeToMore, loading, data, error } = useQuery(ROOM_QUERY, {
     variables: {
       id: roomId,
     },
-    pollInterval: 500,
   });
 
   const [sendMessage, mutationResponse] = useMutation(SEND_MESSAGE, {
@@ -49,6 +61,22 @@ export default function ChatContainer(props) {
       roomId: undefined,
     },
   });
+
+  useEffect(() => {
+    subscribeToMore({
+      document: ROOM_SUBSCRIPTION,
+      variables: { roomId },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const newMessage = subscriptionData.data.messageAdded;
+        return Object.assign({}, prev, {
+          room: {
+            messages: [...prev.room.messages, newMessage],
+          },
+        });
+      },
+    });
+  }, []);
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error.message}</Text>;
@@ -71,10 +99,10 @@ export default function ChatContainer(props) {
   }
 
   return (
-    <React.Fragment>
-      <ChatMessagesAll messagesList={messagesList} />
+    <ScrollView>
+      {!loading && <ChatMessagesAll messagesList={messagesList} />}
       <ChatInput handleSend={handleSend} />
-    </React.Fragment>
+    </ScrollView>
   );
 }
 

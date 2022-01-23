@@ -1,10 +1,15 @@
 import { StyleSheet } from "react-native";
+import * as AbsintheSocket from "@absinthe/socket";
+import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
+import { Socket as PhoenixSocket } from "phoenix";
 import {
+  split,
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
 } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { setContext } from "@apollo/client/link/context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,10 +21,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  // // get the authentication token from local storage if it exists
-  // const token = localStorage.getItem('token');
   const token = "YOUR_TOKEN";
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -28,11 +30,34 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const phoenixSocket = new PhoenixSocket(
+  "wss://chat.thewidlarzgroup.com/socket",
+  {
+    params: {
+      token: "YOUR_TOKEN",
+    },
+  }
+);
+
+const absintheSocket = AbsintheSocket.create(phoenixSocket);
+
+const wsLink = createAbsintheSocketLink(absintheSocket);
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpLink
+);
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(splitLink),
   cache: new InMemoryCache(),
 });
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
