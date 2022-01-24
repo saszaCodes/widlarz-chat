@@ -1,6 +1,14 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import { useMutation, gql } from "@apollo/client";
+import * as Linking from "expo-linking";
+import HeaderBar from "../components/HeaderBar";
+import HeaderTitle from "../components/HeaderTitle";
+import Form from "../components/Form";
+import { colors, typography } from "../styles";
+import FormInput from "../components/FormInput";
+import FormButton from "../components/FormButton";
+import FormText from "../components/FormText";
 
 const REGISTER = gql`
   mutation register(
@@ -69,46 +77,81 @@ export default function RegistrationContainer(props) {
   if (loading) return <Text>Loading...</Text>;
 
   return (
-    <View>
-      {error && <Text>{error.message}</Text>}
-      <TextInput onChangeText={setEmail} value={email} placeholder="Email" />
-      <TextInput
-        onChangeText={setFirstName}
-        value={firstName}
-        placeholder="First name"
-      />
-      <TextInput
-        onChangeText={setLastName}
-        value={lastName}
-        placeholder="Last name"
-      />
-      <TextInput
-        onChangeText={setPassword}
-        value={password}
-        placeholder="Password"
-      />
-      <TextInput
-        onChangeText={setPasswordConfirmation}
-        value={passwordConfirmation}
-        placeholder="Password confirmation"
-      />
-      <Pressable
-        onPress={() =>
-          handleRegistration(
-            email,
-            firstName,
-            lastName,
-            password,
-            passwordConfirmation
-          )
-        }
-      >
-        <Text>Register</Text>
-      </Pressable>
-      <Pressable onPress={handleLoginRoute}>
-        <Text>Login, if you have an account</Text>
-      </Pressable>
-    </View>
+    <React.Fragment>
+      <HeaderBar notRounded={true}>
+        <HeaderTitle title={"Create account"} />
+      </HeaderBar>
+      <Form>
+        {error && <Text>{error.message}</Text>}
+        <FormInput onChangeText={setEmail} value={email} label="email" />
+        <FormInput
+          onChangeText={setFirstName}
+          value={firstName}
+          label="first name"
+        />
+        <FormInput
+          onChangeText={setLastName}
+          value={lastName}
+          label="last name"
+        />
+        <FormInput
+          onChangeText={setPassword}
+          value={password}
+          label="password"
+        />
+        <FormInput
+          onChangeText={setPasswordConfirmation}
+          value={passwordConfirmation}
+          label="password confirmation"
+        />
+        <FormButton
+          pressHandler={() =>
+            handleRegistration(
+              email,
+              firstName,
+              lastName,
+              password,
+              passwordConfirmation
+            )
+          }
+          label={"Sign up"}
+        />
+        <FormText style={{ ...typography.bodyText }}>
+          By signing in you agree with{"\n"}
+          <Text
+            onPress={() => Linking.openURL("https://github.com/saszaCodes")}
+            style={{
+              textDecorationLine: "underline",
+              color: colors.blue.dark,
+            }}
+          >
+            Terms and Conditions
+          </Text>{" "}
+          and{" "}
+          <Text
+            onPress={() => Linking.openURL("https://github.com/saszaCodes")}
+            style={{
+              textDecorationLine: "underline",
+              color: colors.blue.dark,
+            }}
+          >
+            Privacy Policy
+          </Text>
+        </FormText>
+        <FormText style={{ ...typography.bodyText }}>
+          Already have an account?{" "}
+          <Text
+            onPress={handleLoginRoute}
+            style={{
+              fontWeight: "bold",
+              color: colors.plum.dark,
+            }}
+          >
+            Log in
+          </Text>
+        </FormText>
+      </Form>
+    </React.Fragment>
   );
 }
 

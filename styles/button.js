@@ -2,17 +2,17 @@ import { white, gray, plum } from "./colors";
 import { bigRadius, smallRadius } from "./cornerRadius";
 
 export const basicButton = {
-  borderRadius: bigRadius,
+  borderRadius: smallRadius,
 };
 
 export const defaultButton = {
   ...basicButton,
-  backgroundColor: white,
+  backgroundColor: plum.mediumDark,
 };
 
 export const pressedButton = {
   ...basicButton,
-  backgroundColor: plum.mediumDark,
+  backgroundColor: plum.dark,
 };
 
 export const disabledButton = {
