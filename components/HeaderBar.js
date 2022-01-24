@@ -1,13 +1,17 @@
 import { colors, cornerRadius } from "../styles";
 import { StyleSheet, View, Text } from "react-native";
+import HeaderButton from "./HeaderButton";
 
 export default function HeaderBar(props) {
-  console.log(colors.blue.medium);
+  const { children, button1, button2 } = props;
   return (
     <View style={styles.backdrop}>
       <View style={styles.container}>
-        <View style={styles.headerContent}></View>
-        <View style={styles.headerButtons}></View>
+        <View style={styles.headerContent}>{children}</View>
+        <View style={styles.headerButtons}>
+          <HeaderButton icon={button1} />
+          <HeaderButton icon={button2} />
+        </View>
       </View>
     </View>
   );
@@ -20,9 +24,19 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.blue.medium,
     height: 90,
+    padding: 15,
+    paddingTop: 25,
     borderBottomLeftRadius: cornerRadius.bigRadius,
     borderBottomRightRadius: cornerRadius.bigRadius,
+    flexDirection: "row",
+    alignItems: "center",
   },
-  headerContent: {},
-  headerButtons: {},
+  headerContent: {
+    flex: 5,
+  },
+  headerButtons: {
+    flex: 3,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
 });

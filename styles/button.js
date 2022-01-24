@@ -2,8 +2,7 @@ import { white, gray, plum } from "./colors";
 import { bigRadius, smallRadius } from "./cornerRadius";
 
 export const basicButton = {
-  width: "100%",
-  borderRadius: smallRadius,
+  borderRadius: bigRadius,
 };
 
 export const defaultButton = {
