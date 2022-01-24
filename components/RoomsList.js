@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { colors } from "../styles";
 import RoomsListElement from "./RoomsListElement";
 
 export default function RoomsList(props) {
@@ -12,7 +13,12 @@ export default function RoomsList(props) {
     />
   ));
 
-  return <View>{roomsListElements}</View>;
+  return <ScrollView style={styles.container}>{roomsListElements}</ScrollView>;
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 40,
+    backgroundColor: colors.blue.light,
+  },
+});

@@ -1,9 +1,5 @@
 import { white, black, plum } from "./colors";
 
-export const darkText = {
-  color: black,
-};
+export const darkText = black;
 
-export const lightText = {
-  color: white,
-};
+export const lightText = white;

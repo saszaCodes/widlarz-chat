@@ -21,7 +21,7 @@ export const heading4 = {
 export const buttonText = {
   fontSize: 16,
   fontWeight: "600",
-  letterSpacing: "1%",
+  letterSpacing: 1,
 };
 
 export const label = {
