@@ -83,7 +83,11 @@ export default function RegistrationContainer(props) {
       </HeaderBar>
       <Form>
         {error && <Text>{error.message}</Text>}
-        <FormInput onChangeText={setEmail} value={email} label="email" />
+        <FormInput
+          onChangeText={setEmail}
+          value={email}
+          label="e-mail address"
+        />
         <FormInput
           onChangeText={setFirstName}
           value={firstName}
