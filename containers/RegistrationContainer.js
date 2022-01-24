@@ -102,11 +102,13 @@ export default function RegistrationContainer(props) {
           onChangeText={setPassword}
           value={password}
           label="password"
+          secureTextEntry={true}
         />
         <FormInput
           onChangeText={setPasswordConfirmation}
           value={passwordConfirmation}
           label="password confirmation"
+          secureTextEntry={true}
         />
         <FormButton
           pressHandler={() =>

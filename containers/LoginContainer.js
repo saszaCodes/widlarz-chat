@@ -74,6 +74,7 @@ export default function LoginContainer(props) {
           onChangeText={setPassword}
           value={password}
           label="password"
+          secureTextEntry={true}
         />
         <FormButton
           label={"Login"}

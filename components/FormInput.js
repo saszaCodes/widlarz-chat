@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, TextInput } from "react-native";
 import { colors, textColors, textInput, typography } from "../styles";
 
 export default function FormInput(props) {
-  const { onChangeText, value, placeholder, label } = props;
+  const { onChangeText, value, secureTextEntry, label } = props;
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -10,6 +10,7 @@ export default function FormInput(props) {
         style={styles.input}
         onChangeText={onChangeText}
         value={value}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );
