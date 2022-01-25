@@ -71,7 +71,6 @@ export default function ChatContainer(props) {
   });
 
   useEffect(() => {
-    console.log(roomId);
     subscribeToMore({
       document: ROOM_SUBSCRIPTION,
       variables: { roomId },
@@ -101,7 +100,6 @@ export default function ChatContainer(props) {
   });
 
   function handleSend(message) {
-    console.log(roomId);
     sendMessage({
       variables: {
         body: message,
