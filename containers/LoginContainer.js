@@ -97,5 +97,3 @@ export default function LoginContainer(props) {
     </React.Fragment>
   );
 }
-
-const styles = StyleSheet.create({});

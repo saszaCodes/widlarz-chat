@@ -41,5 +41,3 @@ export default function RoomsListContainer(props) {
     </React.Fragment>
   );
 }
-
-const styles = StyleSheet.create({});

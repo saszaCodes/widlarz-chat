@@ -125,5 +125,3 @@ export default function ChatContainer(props) {
     </React.Fragment>
   );
 }
-
-const styles = StyleSheet.create({});

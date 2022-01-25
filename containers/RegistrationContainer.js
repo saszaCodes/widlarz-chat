@@ -160,5 +160,3 @@ export default function RegistrationContainer(props) {
     </React.Fragment>
   );
 }
-
-const styles = StyleSheet.create({});

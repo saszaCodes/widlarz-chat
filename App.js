@@ -68,11 +68,20 @@ function createApolloClient(token, type) {
 
 export default function App() {
   const [sessionToken, setSessionToken] = useState();
+  const [loggedUserId, setLoggedUserId] = useState();
   const [apolloClient, setApolloClient] = useState(createApolloClient());
-  contextValue = { sessionToken, setSessionToken };
+  contextValue = {
+    sessionToken,
+    loggedUserId,
+    setSessionToken,
+    setLoggedUserId,
+  };
 
   useEffect(() => {
-    const newAutorizedClient = createApolloClient(sessionToken);
+    const newAutorizedClient = createApolloClient(
+      sessionToken,
+      "withSubsription"
+    );
     setApolloClient(newAutorizedClient);
   }, [sessionToken]);
 
@@ -80,7 +89,11 @@ export default function App() {
     <SessionContext.Provider value={contextValue}>
       <ApolloProvider client={apolloClient}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="RoomsList" component={RoomsListScreen} />
@@ -91,5 +104,3 @@ export default function App() {
     </SessionContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({});
