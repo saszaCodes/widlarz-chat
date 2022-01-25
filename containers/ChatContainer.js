@@ -1,17 +1,25 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { useQuery, useSubscription, useMutation, gql } from "@apollo/client";
+import Plus from "../assets/plus";
+import Phone from "../assets/phone";
+import Videocall from "../assets/videocall";
 import ChatMessagesAll from "../components/ChatMessagesAll";
 import ChatInput from "../components/ChatInput";
+import HeaderBar from "../components/HeaderBar";
+import HeaderTitleWithIcon from "../components/HeaderTitleWithIcon";
+import Footer from "../components/Footer";
 
 const ROOM_QUERY = gql`
   query getRoomById($id: ID!) {
     room(id: $id) {
       name
       messages {
+        id
         body
         insertedAt
         user {
+          id
           firstName
           lastName
         }
@@ -83,9 +91,11 @@ export default function ChatContainer(props) {
 
   const messagesList = data.room.messages.map((message) => {
     return {
+      id: message.id,
       body: message.body,
       date: message.insertedAt,
       author: `${message.user.firstName} ${message.user.lastName}`,
+      authorId: message.user.id,
     };
   });
 
@@ -99,10 +109,20 @@ export default function ChatContainer(props) {
   }
 
   return (
-    <ScrollView>
+    <React.Fragment>
+      <HeaderBar button1={Phone} button2={Videocall}>
+        <HeaderTitleWithIcon
+          title={data.room.name}
+          subtitle={"Active now"}
+          icon={<Plus />}
+        />
+      </HeaderBar>
+
       {!loading && <ChatMessagesAll messagesList={messagesList} />}
-      <ChatInput handleSend={handleSend} />
-    </ScrollView>
+      <Footer>
+        <ChatInput handleSend={handleSend} />
+      </Footer>
+    </React.Fragment>
   );
 }
 

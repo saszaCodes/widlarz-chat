@@ -24,7 +24,7 @@ const LOGIN = gql`
 
 export default function LoginContainer(props) {
   const { navigation } = props;
-  const { setSessionToken } = useContext(SessionContext);
+  const { setSessionToken, setLoggedUserId } = useContext(SessionContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -37,6 +37,7 @@ export default function LoginContainer(props) {
 
   if (data) {
     setSessionToken(data.loginUser.token);
+    setLoggedUserId(data.loginUser.user.id);
     navigation.replace("RoomsList");
   }
 
