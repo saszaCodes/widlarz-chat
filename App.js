@@ -14,6 +14,8 @@ import { setContext } from "@apollo/client/link/context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState, useEffect } from "react";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 import SessionContext from "./contexts/SessionContext";
 import RegistrationScreen from "./screens/RegistrationScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -70,6 +72,9 @@ export default function App() {
   const [sessionToken, setSessionToken] = useState();
   const [loggedUserId, setLoggedUserId] = useState();
   const [apolloClient, setApolloClient] = useState(createApolloClient());
+  let [fontsLoaded] = useFonts({
+    Poppins: require("./assets/fonts/Poppins/Poppins-Black.ttf"),
+  });
   contextValue = {
     sessionToken,
     loggedUserId,
@@ -85,6 +90,9 @@ export default function App() {
     setApolloClient(newAutorizedClient);
   }, [sessionToken]);
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <SessionContext.Provider value={contextValue}>
       <ApolloProvider client={apolloClient}>
