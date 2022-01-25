@@ -7,8 +7,9 @@ export default function RoomsList(props) {
 
   const roomsListElements = roomsList.map((room) => (
     <RoomsListElement
-      name={room.name}
+      key={room.id}
       id={room.id}
+      name={room.name}
       pressHandler={pressHandler}
     />
   ));
