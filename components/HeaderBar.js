@@ -18,10 +18,12 @@ export default function HeaderBar(props) {
         }
       >
         <View style={styles.headerContent}>{children}</View>
-        <View style={styles.headerButtons}>
-          <HeaderButton icon={button1} />
-          <HeaderButton icon={button2} />
-        </View>
+        {(button1 || button2) && (
+          <View style={styles.headerButtons}>
+            <HeaderButton icon={button1} />
+            <HeaderButton icon={button2} />
+          </View>
+        )}
       </View>
     </View>
   );

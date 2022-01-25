@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   subtitle: {
-    ...typography.bodyText,
+    ...typography.titleAndInput,
     color: textColors.lightText,
     flex: 1,
     flexWrap: "wrap",

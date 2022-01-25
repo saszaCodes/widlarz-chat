@@ -8,7 +8,7 @@ export default function HeaderTitle(props) {
 
 const styles = StyleSheet.create({
   title: {
-    ...typography.heading2,
+    ...typography.heading1,
     color: textColors.plumText,
   },
 });

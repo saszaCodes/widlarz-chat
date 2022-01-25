@@ -73,7 +73,10 @@ export default function App() {
   const [loggedUserId, setLoggedUserId] = useState();
   const [apolloClient, setApolloClient] = useState(createApolloClient());
   let [fontsLoaded] = useFonts({
-    Poppins: require("./assets/fonts/Poppins/Poppins-Black.ttf"),
+    PoppinsBold: require("./assets/fonts/Poppins/Poppins-Bold.ttf"),
+    PoppinsSemiBold: require("./assets/fonts/Poppins/Poppins-SemiBold.ttf"),
+    PoppinsMedium: require("./assets/fonts/Poppins/Poppins-Medium.ttf"),
+    PoppinsRegular: require("./assets/fonts/Poppins/Poppins-Regular.ttf"),
   });
   contextValue = {
     sessionToken,
